@@ -34,7 +34,16 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 
 // sets the X-Original-Host header from the request's Host
 func (m *OriginalHostMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	originalHost := req.Host
+	originalHost := req.Header.Get(m.headerName)
+	if originalHost == "" {
+		// Fallback to X-Forwarded-Host
+		originalHost = req.Header.Get("X-Forwarded-Host")
+		if originalHost == "" {
+			// Finally fallback to the current Host header
+			originalHost = req.Host
+		}
+	}
+
 	req.Header.Set(m.headerName, originalHost)
 	m.next.ServeHTTP(rw, req)
 }
