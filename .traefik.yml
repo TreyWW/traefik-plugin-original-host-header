@@ -2,7 +2,7 @@ displayName: Original Host Header
 summary: A middleware that sets the X-Original-Host header from the request Host.
 type: middleware
 
-import: github.com/treyww/traefik-plugin-original-host-header
+import: github.com/TreyWW/traefik-plugin-original-host-header
 
 testData:
   headerName: X-Original-Host
